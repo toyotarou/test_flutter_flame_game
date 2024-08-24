@@ -17,6 +17,8 @@ class Player extends SpriteComponent with HasGameRef<GoGreenGame> {
 
     anchor = Anchor.topCenter;
 
+    angle = 0.5;
+
     add(RectangleHitbox());
   }
 
