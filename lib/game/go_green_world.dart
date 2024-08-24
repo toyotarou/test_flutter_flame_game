@@ -3,12 +3,32 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:test_flutter_flame_game/constants.dart';
 import 'package:test_flutter_flame_game/game/go_green_game.dart';
+import 'package:test_flutter_flame_game/game/level_data.dart';
 import 'package:test_flutter_flame_game/game/sprites/face.dart';
 import 'package:test_flutter_flame_game/game/sprites/obstacle.dart';
 import 'package:test_flutter_flame_game/game/sprites/player.dart';
 
 class GoGreenWorld extends World with HasGameRef<GoGreenGame> {
   late final Player player;
+
+  ///
+  void loadLevel(List<ObstacleData> levelData) {
+    removeAll(children.whereType<Obstacle>().toList());
+
+    for (var data in levelData) {
+      Obstacle obstacle;
+
+      if (data.type == ObstacleType.dolphin) {
+        obstacle = ObstacleDolphin()..position = data.position;
+      } else if (data.type == ObstacleType.crab) {
+        obstacle = ObstacleCrab()..position = data.position;
+      } else {
+        continue;
+      }
+
+      add(obstacle);
+    }
+  }
 
   ///
   @override
@@ -21,8 +41,7 @@ class GoGreenWorld extends World with HasGameRef<GoGreenGame> {
 
     add(Face());
 
-    add(ObstacleDolphin()..position = Vector2(0, 0));
-    add(ObstacleCrab()..position = Vector2(-obstacleSize * 3, 0));
+    loadLevel(LevelData().level1());
   }
 
   ///
